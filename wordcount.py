@@ -12,7 +12,7 @@ class WordCount:
     
     def __init__(self):
         try:
-            print("Word Counter bot for Reddit: version 1.0.0 - by u/TiagoPaolini")
+            print("Word Counter bot for Reddit: version 1.0.1 - by u/TiagoPaolini")
             self.reddit = praw.Reddit()
             print("Search the 1000 most recent posts of a subreddit in order to find who has said some word or sentence the most.")
         except MissingRequiredAttributeException:
@@ -113,7 +113,7 @@ class WordCount:
         with open(self.file_name, "a", encoding="utf-8") as file:
 
             date = str(datetime.now())[:19] + "\n"
-            titles = "User".ljust(user_column_width) + "Count".rjust(count_column_width)
+            titles = "User".ljust(user_column_width) + "\t" + "Count".rjust(count_column_width)
             header = f"'{self.search_text}' count on {date}\n{titles}\n"
             file.write(header)
             print("\n" + titles)
@@ -137,7 +137,7 @@ class WordCount:
         post_word_counter = Counter()
         
         # Search the post body for the text
-        if submission.is_self:
+        if (submission.is_self) and (submission.author is not None):
             post_author = submission.author.name
             post_body = submission.selftext.lower()
             text_count = post_body.count(self.search_text)
